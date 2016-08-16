@@ -37,8 +37,6 @@ class BE_Full_Post_Scroll_Core {
 		if( ! is_single() )
 			return;	
 			
-		wp_enqueue_script( 'scrollspy', BE_FULL_POST_SCROLL_URL . 'assets/js/scrollspy.js', array( 'jquery' ), BE_FULL_POST_SCROLL_VERSION, true );
-		wp_enqueue_script( 'history', BE_FULL_POST_SCROLL_URL . 'assets/js/jquery.history.js', array( 'jquery' ), BE_FULL_POST_SCROLL_VERSION, true );
 		wp_enqueue_script( 'be-full-post-scroll', BE_FULL_POST_SCROLL_URL . 'assets/js/be-full-post-scroll.js', array( 'jquery', 'scrollspy', 'history' ), BE_FULL_POST_SCROLL_VERSION, true );
 
 	}
