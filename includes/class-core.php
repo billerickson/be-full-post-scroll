@@ -22,6 +22,7 @@ class BE_Full_Post_Scroll_Core {
 		
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
 		add_action( 'init', array( $this, 'endpoint' ) );
+		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 		
 	}
 	
@@ -52,5 +53,22 @@ class BE_Full_Post_Scroll_Core {
 		add_rewrite_endpoint( 'partial', EP_PERMALINK );
 
 	}
+	
+	/**
+	 * Template Redirect
+	 *
+	 * @since 1.0.0
+	 */
+	public function template_redirect() {
+	
+		if( is_single() && get_query_var( 'partial' ) ) {
+			
+			$template = get_stylesheet_directory() . '/template-parts/content-partial.php';
+			$template = apply_filters( 'be_full_post_scroll_template', $template );
+			include $template;
+			exit;
+			
+		}
+	} 
 
 }
