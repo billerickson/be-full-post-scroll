@@ -13,4 +13,26 @@
  
 class BE_Full_Post_Scroll_Install {
 
+	/**
+	 * Primary class constructor.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct() {
+		
+		register_activation_hook( BE_FULL_POST_SCROLL_FILE, array( $this, 'flush' ) );
+		register_deactivation_hook( BE_FULL_POST_SCROLL_FILE, array( $this, 'flush' ) );
+
+	}
+	
+	/**
+	 * Flush rewrite rules
+	 *
+	 * @since 1.0.0
+	 */
+	function flush() {
+		
+		flush_rewrite_rules();
+	}
+	
 }

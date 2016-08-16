@@ -52,7 +52,7 @@ final class BE_Full_Post_Scroll {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	private static $version = '1.0.0';
+	private $version = '1.0.0';
 	
 	/**
 	 * Install instance
@@ -84,7 +84,7 @@ final class BE_Full_Post_Scroll {
 			self::$instance->constants();
 			self::$instance->includes();
 
-			add_action( 'init', array( self::$instance, 'init' ) );
+			add_action( 'plugins_loaded', array( self::$instance, 'init' ) );
 		}
 		return self::$instance;
 	}
