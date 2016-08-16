@@ -45,6 +45,30 @@ final class BE_Full_Post_Scroll {
 	 * @var object
 	 */
 	private static $instance;
+	
+	/**
+	 * Plugin version
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	private static $version = '1.0.0';
+	
+	/**
+	 * Install instance
+	 *
+	 * @since 1.0.0
+	 * @var object
+	 */
+	public $install;
+	
+	/**
+	 * Core instance
+	 *
+	 * @since 1.0.0
+	 * @var object
+	 */
+	public $core;
 
 	/** 
 	 * Full Post Scroll Instance.
@@ -72,6 +96,9 @@ final class BE_Full_Post_Scroll {
 	 */
 	public function constants() {
 
+		// Version
+		define( 'BE_FULL_POST_SCROLL_VERSION', $this->version );
+		
 		// Directory path
 		define( 'BE_FULL_POST_SCROLL_DIR', plugin_dir_path( __FILE__ ) );
 
