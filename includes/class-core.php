@@ -39,6 +39,18 @@ class BE_Full_Post_Scroll_Core {
 		
 		wp_enqueue_script( 'history', BE_FULL_POST_SCROLL_URL . 'assets/js/jquery.history.js', array( 'jquery' ), BE_FULL_POST_SCROLL_VERSION, true );	
 		wp_enqueue_script( 'be-full-post-scroll', BE_FULL_POST_SCROLL_URL . 'assets/js/be-full-post-scroll.js', array( 'jquery', 'history' ), BE_FULL_POST_SCROLL_VERSION, true );
+		
+		$args = array(
+			'container' => '.content',
+			'post'      => '.entry',
+			'next'      => '.post-navigation a[rel="prev"]',
+			'offset'    => 2000,
+			'delay'     => 400,
+			'debug'     => false,
+		);
+		
+		$args = apply_filters( 'be_full_post_scroll_args', $args );
+		wp_localize_script( 'be-full-post-scroll', 'args', $args );
 
 	}
 	

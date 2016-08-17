@@ -1,30 +1,28 @@
 jQuery(function($){
 
-	// @todo make these customizable through wp_localize_script()
-	var container = '.infinite-wrapper';
-	var post = '.infinite-scroll-post';
-	var next = '.post-navigation a[rel="prev"]';
-	var offset = 2000;
-	var delay = 400;
-	var debug = false;
-
+	// filterable variables
+	if( args.debug ) {
+		console.log( 'Use `be_full_post_scroll_args` filter to customize these variables:' );
+		console.log( args );
+	}
+	
 	// internal variables
-	$(container).append( '<span class="load-more"></span>' );
-	var button = $(container + ' .load-more');
-	$(post).attr('data-title', document.title).attr('data-url', window.location.href );
-	var next_url = $(next).attr('href');
+	$(args.container).append( '<span class="load-more"></span>' );
+	var button = $(args.container + ' .load-more');
+	$(args.post).attr('data-title', document.title).attr('data-url', window.location.href );
+	var next_url = $(args.next).attr('href');
 	var loading = false;
 	var scrollHandling = {
 	    allow: true,
 	    reallow: function() {
 	        scrollHandling.allow = true;
 	    },
-	    delay: delay
+	    delay: args.delay
 	};
 	
-	if( debug ) {
+	if( args.debug ) {
 		console.log( 'Next Post: ' + next_url );
-		console.log( 'Will load when offset = ' + offset );
+		console.log( 'Will load when offset = ' + args.offset );
 	}
 
 	$(window).scroll(function(){
@@ -36,14 +34,14 @@ jQuery(function($){
 			
 			// Change URL if viewing a new post
 			var State = History.getState(); 
-			$( post ).each(function(){
+			$( args.post ).each(function(){
 			    var top = window.pageYOffset;
 			    var distance = top - $(this).offset().top;
 			    var url = $(this).attr('data-url');
 			    var title = $(this).attr('data-title');
 			
 			    if (distance < 150 && distance > -150 && State.url != url) {
-			    	if( debug ) {
+			    	if( args.debug ) {
 			    		console.log( 'Changing URL' );
 			    	}
 			       History.pushState(null, null, url );
@@ -53,29 +51,29 @@ jQuery(function($){
 			
 			// Load more posts if close enough to end of page
 			var current_offset = $(button).offset().top - $(window).scrollTop();
-			if( debug ) {
+			if( args.debug ) {
 				console.log( 'Current offset: ' + current_offset );
 			}
-			if( offset > current_offset ) {
+			if( args.offset > current_offset ) {
 				loading = true;
 				
-				if( debug ) {
+				if( args.debug ) {
 					console.log( 'Loading next post' );
 				}
 				
-				$(next).remove();
+				$(args.next).remove();
 				$.get(next_url + '/partial/1', function(content) {
-					$(container).append( content );
-					$(container).append( button );
-					next_url = $(next).attr('href');
+					$(args.container).append( content );
+					$(args.container).append( button );
+					next_url = $(args.next).attr('href');
 					loading = false;
 					
-					if( debug ) {
+					if( args.debug ) {
 						console.log( 'Next post: ' + next_url );
 					}
 
 				}).fail(function(xhr, textStatus, e) {
-					if( debug ) {
+					if( args.debug ) {
 						console.log(xhr.responseText);
 					}
 				});
@@ -84,16 +82,3 @@ jQuery(function($){
 		}
 	});
 });
-
-function be_check_current_post() {
-	$('.hash').each(function () {
-	    var top = window.pageYOffset;
-	    var distance = top - $(this).offset().top;
-	    var hash = $(this).attr('href');
-	
-	    if (distance < 30 && distance > -30 && currentHash != hash) {
-	        alert(hash);
-	        currentHash = hash;
-	    }
-	});
-}
