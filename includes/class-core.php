@@ -34,7 +34,8 @@ class BE_Full_Post_Scroll_Core {
 	public function scripts() {
 
 		// Only enqueue on single posts
-		if( ! is_single() )
+		$display = apply_filters( 'be_full_post_scroll', is_single() );
+		if( ! $display )
 			return;	
 		
 		wp_enqueue_script( 'history', BE_FULL_POST_SCROLL_URL . 'assets/js/jquery.history.js', array( 'jquery' ), BE_FULL_POST_SCROLL_VERSION, true );	
@@ -72,7 +73,8 @@ class BE_Full_Post_Scroll_Core {
 	 */
 	public function template_redirect() {
 	
-		if( is_single() && get_query_var( 'partial' ) ) {
+		$display = apply_filters( 'be_full_post_scroll', is_single() );
+		if( $display && get_query_var( 'partial' ) ) {
 			
 			$template = get_stylesheet_directory() . '/template-parts/content-partial.php';
 			$template = apply_filters( 'be_full_post_scroll_template', $template );
