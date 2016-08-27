@@ -37,10 +37,14 @@ jQuery(function($){
 			$( args.post ).each(function(){
 			    var top = window.pageYOffset;
 			    var distance = top - $(this).offset().top;
+			    var height = $(this).outerHeight();
 			    var url = $(this).attr('data-url');
 			    var title = $(this).attr('data-title');
-			
-			    if (distance < 150 && distance > -150 && State.url != url) {
+			    
+			    var atTop = distance < 150 && distance > -150;
+			    var atBottom = ( distance - height ) < -300 && ( distance - height ) > -600;
+			    
+			    if ( ( atTop || atBottom ) && State.url != url) {
 			    	if( args.debug ) {
 			    		console.log( 'Changing URL' );
 			    	}
