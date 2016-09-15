@@ -5,7 +5,7 @@
  * GitHub URI: billerickson/be-full-post-scroll
  * Description: When viewing a single post, dynamically load the next post as the user scrolls
  * Author:      Bill Erickson
- * Version:     1.0.0
+ * Version:     1.0.3
  *
  * BE Full Post Scroll is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
  * @license    GPL-2.0+
  * @copyright  Copyright (c) 2015
  */
- 
+
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -45,15 +45,15 @@ final class BE_Full_Post_Scroll {
 	 * @var object
 	 */
 	private static $instance;
-	
+
 	/**
 	 * Plugin version
 	 *
 	 * @since 1.0.0
 	 * @var string
 	 */
-	private $version = '1.0.0';
-	
+	private $version = '1.0.3';
+
 	/**
 	 * Install instance
 	 *
@@ -61,7 +61,7 @@ final class BE_Full_Post_Scroll {
 	 * @var object
 	 */
 	public $install;
-	
+
 	/**
 	 * Core instance
 	 *
@@ -70,7 +70,7 @@ final class BE_Full_Post_Scroll {
 	 */
 	public $core;
 
-	/** 
+	/**
 	 * Full Post Scroll Instance.
 	 *
 	 * @since 1.0.0
@@ -79,7 +79,7 @@ final class BE_Full_Post_Scroll {
 	public static function instance() {
 
 		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof BE_Full_Post_Scroll ) ) {
-			
+
 			self::$instance = new BE_Full_Post_Scroll;
 			self::$instance->constants();
 			self::$instance->includes();
@@ -98,7 +98,7 @@ final class BE_Full_Post_Scroll {
 
 		// Version
 		define( 'BE_FULL_POST_SCROLL_VERSION', $this->version );
-		
+
 		// Directory path
 		define( 'BE_FULL_POST_SCROLL_DIR', plugin_dir_path( __FILE__ ) );
 
@@ -107,7 +107,7 @@ final class BE_Full_Post_Scroll {
 
 		// Base name
 		define( 'BE_FULL_POST_SCROLL_BASE', plugin_basename( __FILE__ ) );
-		
+
 		// Plugin root file
 		define( 'BE_FULL_POST_SCROLL_FILE', __FILE__ );
 	}
@@ -126,7 +126,7 @@ final class BE_Full_Post_Scroll {
 
 	/**
 	 * Bootstap.
-	 * 
+	 *
 	 * @since 1.3.0
 	 */
 	public function init() {

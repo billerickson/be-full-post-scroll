@@ -5,7 +5,7 @@ jQuery(function($){
 		console.log( 'Use `be_full_post_scroll_args` filter to customize these variables:' );
 		console.log( args );
 	}
-	
+
 	// internal variables
 	$(args.container).append( '<span class="load-more"></span>' );
 	var button = $(args.container + ' .load-more');
@@ -19,40 +19,41 @@ jQuery(function($){
 	    },
 	    delay: args.delay
 	};
-	
+
 	if( args.debug ) {
 		console.log( 'Next Post: ' + next_url );
 		console.log( 'Will load when offset = ' + args.offset );
 	}
 
+	// ScrollSpy
+	function be_change_url_on_scroll() {
+		$( args.post ).each( function(){
+			var $this = $(this);
+			var position = $(this).position();
+			$this.scrollspy({
+				min: position.top,
+				max: position.top + $this.height(),
+				onEnter: function onEnter(element){
+					if( args.debug ) {
+						console.log( 'Changing URL' );
+					}
+					History.pushState(null, null, $this.attr('data-url'));
+					window.document.title = $this.attr('data-title');
+					$(args.post).removeClass('section-active');
+					$this.addClass('section-active');
+				}
+			});
+		});
+	}
+	be_change_url_on_scroll();
+
 	$(window).scroll(function(){
 		if( ! loading && scrollHandling.allow && next_url ) {
-		
+
 			// Start the timer so we don't run this code too often
 			scrollHandling.allow = false;
 			setTimeout(scrollHandling.reallow, scrollHandling.delay);
-			
-			// Change URL if viewing a new post
-			var State = History.getState(); 
-			$( args.post ).each(function(){
-			    var top = window.pageYOffset;
-			    var distance = top - $(this).offset().top;
-			    var height = $(this).outerHeight();
-			    var url = $(this).attr('data-url');
-			    var title = $(this).attr('data-title');
-			    
-			    var atTop = distance < 150 && distance > -150;
-			    var atBottom = ( distance - height ) < -300 && ( distance - height ) > -600;
-			    
-			    if ( ( atTop || atBottom ) && State.url != url) {
-			    	if( args.debug ) {
-			    		console.log( 'Changing URL' );
-			    	}
-			       History.pushState(null, null, url );
-					window.document.title = title;
-			    }
-			});
-			
+
 			// Load more posts if close enough to end of page
 			var current_offset = $(button).offset().top - $(window).scrollTop();
 			if( args.debug ) {
@@ -60,18 +61,20 @@ jQuery(function($){
 			}
 			if( args.offset > current_offset ) {
 				loading = true;
-				
+
 				if( args.debug ) {
 					console.log( 'Loading next post' );
 				}
-				
+
 				$(args.next).remove();
 				$.get(next_url + '/partial/1', function(content) {
+					$('body').addClass('infinite-scroll-active');
 					$(args.container).append( content );
 					$(args.container).append( button );
+					be_change_url_on_scroll();
 					next_url = $(args.next).attr('href');
 					loading = false;
-					
+
 					if( args.debug ) {
 						console.log( 'Next post: ' + next_url );
 					}
